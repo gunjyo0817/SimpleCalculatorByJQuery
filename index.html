@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="style.css">
+        <title>Simple Calculator</title>
+    </head>
+    <body>
+        <h1>Simple Calculator</h1>
+        <div id="parent">
+            <div class="row">
+                <div class="col" id="disVal">0</div>
+            </div>
+            <div class="row">
+                <div class="but col" id="ac">AC</div>
+                <div class="but col" id="back">&#8676;</div>
+                <div class="but oper col" id="divide">&#247;</div>
+            </div>
+            <div class="row">
+                <div class="but num col" id="seven">7</div>
+                <div class="but num col" id="eight">8</div>
+                <div class="but num col" id="nine">9</div>
+                <div class="but oper col" id="mut">x</div>
+            </div>
+            <div class="row">
+                <div class="but num col" id="four">4</div>
+                <div class="but num col" id="five">5</div>
+                <div class="but num col" id="six">6</div>
+                <div class="but oper col" id="minus">-</div>
+            </div>
+            <div class="row">
+                <div class="but num col" id="one">1</div>
+                <div class="but num col" id="two">2</div>
+                <div class="but num col" id="three">3</div>
+                <div class="but oper col" id="plus">+</div>
+            </div>
+            <div class="row">
+                <div class="but num col" id="zero">0</div>
+                <div class="but col" id="dec">.</div>
+                <div class="but oper col" id="equal">=</div>
+            </div>
+        </div>
+        <script>
+            var displayVal = '0';
+            var pendingVal ;
+            var evalStringArray = [];
+
+            $(document).ready(function(){
+                $('.num').on('click',function(e) {
+                    if(displayVal === '0'){
+                        displayVal = '';
+                    }
+                    displayVal += e.target.innerText;
+                    $('#disVal').html(displayVal);
+                });
+
+                $('.oper').on('click',function(e){
+                    var operator = e.target.innerText;
+                    switch(operator){
+                        case '+':
+                            pendingVal = displayVal;
+                            displayVal = '0';
+                            $('#disVal').html(displayVal);
+                            evalStringArray.push(pendingVal);
+                            evalStringArray.push('+');
+                            break;
+
+                        case '-':
+                            pendingVal = displayVal;
+                            displayVal = '0';
+                            $('#disVal').html(displayVal);
+                            evalStringArray.push(pendingVal);
+                            evalStringArray.push('-');
+                            break;
+                        
+                        case 'x':
+                            pendingVal = displayVal;
+                            displayVal = '0';
+                            $('#disVal').html(displayVal);
+                            evalStringArray.push(pendingVal);
+                            evalStringArray.push('*');
+                            break;
+
+                        case '÷':
+                            pendingVal = displayVal;
+                            displayVal = '0';
+                            $('#disVal').html(displayVal);
+                            evalStringArray.push(pendingVal);
+                            evalStringArray.push('/');
+                            break;
+
+                        case '=':
+                            evalStringArray.push(displayVal);
+                            var evalRes = eval(evalStringArray.join(' '));
+                            displayVal = evalRes + '';
+                            $('#disVal').html(displayVal);
+                            evalStringArray = [];
+                            break;
+                        default:
+                            break;
+                        
+                    }
+                });
+
+                $('#ac').on('click',function(){
+                    displayVal = '0';
+                    pendingVal = undefined;
+                    evalStringArray = [];
+                    $('#disVal').html(displayVal);
+                });
+                
+                $('#back').on('click',function(){
+                    let lenOfDisVal = displayVal.length;
+                    displayVal = displayVal.slice(0,lenOfDisVal - 1);
+                    
+                    if(displayVal === '') displayVal = '0';
+                    
+                    $('#disVal').html(displayVal);
+                });
+                
+                $('#dec').on('click',function(){
+                    if(!displayVal.includes('.')) displayVal += '.';
+                    $('#disVal').html(displayVal);
+                });
+                
+            });
+        </script>
+
+    </body>
+</html>
